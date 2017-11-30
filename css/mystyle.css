@@ -1,0 +1,115 @@
+body{
+	background: #EDE574;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.a{
+	min-height:150px;
+	max-height:150px;
+}
+
+.b{
+	color: #3C3B3F;
+}
+.p{
+	min-height:80px;
+	padding-top:28px;
+}
+.k{
+	color: white;
+	background-color: #3C3B3F;
+}
+.navbar-default{
+	background: #3C3B3F;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #605C3C, #3C3B3F);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #605C3C, #3C3B3F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.navbar-default .navbar-nav>li>a{
+	color: white !important;
+}
+.nav li a:hover,.nav li a:focus {
+	    text-decoration: none;
+	background-color: #8e9eab !important;
+	color: white !important;
+}
+.nav li a.active{
+	text-decoration: none;
+	background-color: white !important;
+	color: #3C3B3F !important;
+}
+.carousel-control.left{
+	    background-image: linear-gradient(to right,rgba(0,0,0,.1) 0,rgba(0,0,0,.0001) 100%) !important;
+}
+.carousel-control.right{
+	       background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0,0,0,.1) 100%) !important;
+}
+.panel-footer{
+	color:white;
+	background-color: #3C3B3F !important;
+}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover{
+	background-image: -webkit-linear-gradient(top,#3C3B3F,#605C3C 100%) !important;
+	border-color: #3C3B3F !important;
+}
+.list-group-item{
+	border: 1px solid #605C3C !important;
+
+}
+.thumbnail{
+	border: 1px solid #3C3B3F !important;
+	box-shadow: 4px 4px 4px #3C3B3F !important;
+  -moz-box-shadow: 4px 4px 4px #3C3B3F !important;
+  -webkit-box-shadow: 4px 4px 4px #3C3B3F !important;
+  margin-right: 4px !important;
+}
+a.list-group-item, button.list-group-item{
+	color: #3C3B3F !important;
+}
+.list-group-item:hover,.list-group-item:focus{
+	background-color: #3C3B3F !important;
+	color: white !important;
+}
+.list-group-item.active{
+	background-color: #3C3B3F !important;
+	color: white !important;
+}
+.list-group{
+	box-shadow: 4px 4px 4px #9a8478 !important;
+  -moz-box-shadow: 4px 4px 4px #9a8478 !important;
+  -webkit-box-shadow: 4px 4px 4px #9a8478 !important;
+  margin-right: 4px !important;
+}
+.carousel-control{
+	width: 0% !important;
+}
+.carousel-control .glyphicon-chevron-right, .carousel-control .icon-next{
+	margin-right: 50px !important;
+}
+.carousel-control .glyphicon-chevron-left, .carousel-control .icon-prev{
+	margin-left: 50px !important;
+}
+a{
+	color: #3C3B3F !important;
+}
+.form-control{
+	border: 1px solid #3C3B3F !important;
+}
+.menubar{
+	font-size: 25px;
+}
+
+.p {
+	padding-top: 20px;
+}
+
+.dropdown-menu{
+	background: #e9d362;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #333333, #e9d362);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #333333, #e9d362); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.t{
+	color: white !important;
+}

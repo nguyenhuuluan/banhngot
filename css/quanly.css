@@ -1,0 +1,19 @@
+
+#left
+{
+	float:left;
+	width: 15%;	
+	background-color:#343a40;
+    height:100%;
+}
+
+#right
+{
+	float:left;
+	width: 85%px;
+	height:100%;
+	background-color:gray;
+	padding:30px;
+	border-color:Blue;
+	
+}
