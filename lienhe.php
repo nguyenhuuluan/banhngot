@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,7 +123,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<ol class="breadcrumb">
-								<li><a href="index.html"><B>HOME</B></a>
+								<li><a href="index.php"><B>HOME</B></a>
 								<li class="active"><B>Liên hệ</B></a></li>
 								</li>
 							</ol>
@@ -133,9 +134,18 @@
 							<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
 							<div class="list-group">
 								<b>
-									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangnhap.html">Đăng Nhập</a></div><br>
-									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.html">Tạo Mới Tài Khoản</a></div><br>
-								</b>
+								 <?php 
+								if (isset($_SESSION['username']) && $_SESSION['username']){
+								  echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>Bạn Đăng Nhập Với ' .$_SESSION['username']."</div><br/>";
+								  echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>Click Vào Đây Để <a href="logout.php">Logout</a></div><br/>';
+								  }
+								  else{
+         						  	echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>Vui Lòng <a href="dangnhap.php">Đăng Nhập</a></div><br/>';
+         						  	echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangki.php">Đăng Kí</a></div><br/>';
+      							 }
+								 ?>
+							</b>
+
 							</div>
 							<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>
 							<div class="list-group">
