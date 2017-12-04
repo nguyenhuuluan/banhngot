@@ -1,3 +1,4 @@
+<?php session_start(); if (!isset($_SESSION['username'])) {header('Location: login.php');}?>
 <html lang="en">
 <head>
 	<link href="../css/sb-admin.css" rel="stylesheet">
@@ -12,7 +13,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-		<a class="navbar-brand" href="index.html">Welcome to ADMIN PAGE</a>
+		<a class="navbar-brand" href="quanly.php?tmp=Account">Welcome to ADMIN PAGE</a>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -35,7 +36,13 @@
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
 					<a class="nav-link" href="quanly.php?tmp=LoaiBanh">
 						<i class="fa fa-fw fa-wrench"></i>
-						<span class="nav-link-text">Quản lý loại bánh</span>
+						<span class="nav-link-text">Quản lý Loại Bánh</span>
+					</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+					<a class="nav-link" href="quanly.php?tmp=KhuyenMai">
+						<i class="fa fa-fw fa-wrench"></i>
+						<span class="nav-link-text">Quản lý Khuyến Mãi</span>
 					</a>
 				</li>
 			</ul>
@@ -46,11 +53,12 @@
 					</a>
 				</li>
 			</ul>
-			<ul class="navbar-nav ml-auto">				
-				<li class="nav-item">
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+			<ul class="navbar-nav ml-auto">		
+					<li class="">
+						<a href="#" style="text-decoration: none; color:gray;"> <?php echo $_SESSION['username'];  ?>&nbsp;&nbsp;&nbsp;&nbsp;</a>
+					</li>	
+					<li class="nav-item">
+						<a href="quanly.php?tmp=logout"  style="text-decoration: none; color:gray;>
 						<i class="fa fa-fw fa-sign-out"></i>Logout</a>
 					</li>
 				</ul>
@@ -61,155 +69,17 @@
 				<div class="card-header">
 					<i class="fa fa-table"></i><?php
 					if(isset($_GET["tmp"]))
+					{
 						echo 'Quản lý '.$_GET["tmp"];
+					}else if(isset($_GET["tmp1"]))
+					{
+						echo 'Quản lý '.$_GET["tmp1"];
+					}
 					else echo 'Quản lý Account';
-					?></div>
+					?>
+				</div>
 					<div class="card-body">
-						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-								<thead>
-									<tr>
-										<?php
-										include ("connec.php");
-										if(isset($_GET["tmp"]))
-										{
-                							//Banh
-											if($_GET["tmp"]=="Banh"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='banh'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												}                		
-											}                		
-
-                							//Loai banh	
-											else if($_GET["tmp"]=="LoaiBanh"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='loaibanh'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												} 
-											}
-                							//Account
-											else if($_GET["tmp"]=="Account"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												} 
-											}
-										}else{
-										$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-										$kq1 = mysqli_query($conn,$query1);
-										while($row = mysqli_fetch_row($kq1)){
-											echo '<th>'.$row[0].'</th>';
-										} 
-										}
-										?>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<?php
-										include ("connec.php");
-										if(isset($_GET["tmp"]))
-										{
-                							//Banh
-											if($_GET["tmp"]=="Banh"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='banh'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												}                		
-											}                		
-
-                							//Loai banh	
-											else if($_GET["tmp"]=="LoaiBanh"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='loaibanh'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												} 
-											}
-                							//Account
-											else if($_GET["tmp"]=="Account"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												} 
-											}
-										}else{
-										$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-										$kq1 = mysqli_query($conn,$query1);
-										while($row = mysqli_fetch_row($kq1)){
-											echo '<th>'.$row[0].'</th>';
-										} 
-										}
-										?>
-									</tr>
-								</tfoot>
-								<tbody>
-									<?php
-									if(isset($_GET["tmp"])){
-										if($_GET["tmp"]=="Banh"){
-											$query2= "SELECT * FROM banh";
-											$kq2 = mysqli_query($conn,$query2);
-											while($row = mysqli_fetch_row($kq2)){
-												echo '	<tr>
-												<td>'.$row[0].'</td>
-												<td>'.$row[1].'</td>
-												<td>'.$row[2].'</td>
-												<td>'.$row[3].'</td>
-												<td>'.$row[4].'</td>
-												<td>'.$row[5].'</td>
-												</tr>';
-											}	
-										}
-										else if($_GET["tmp"]=="LoaiBanh"){
-											$query2= "SELECT * FROM loaibanh";
-											$kq2 = mysqli_query($conn,$query2);
-											while($row = mysqli_fetch_row($kq2)){
-												echo '	<tr>
-												<td>'.$row[0].'</td>
-												<td>'.$row[1].'</td>
-
-												</tr>';
-											}	
-										}
-										else if($_GET["tmp"]=="Account"){
-											$query2= "SELECT * FROM account";
-											$kq2 = mysqli_query($conn,$query2);
-											while($row = mysqli_fetch_row($kq2)){
-												echo '	<tr>
-												<td>'.$row[0].'</td>
-												<td>'.$row[1].'</td>
-												<td>'.$row[2].'</td>
-												<td>'.$row[3].'</td>
-
-												</tr>';
-											}	
-										}											
-									}
-									else
-									{
-										$query2= "SELECT * FROM account";
-											$kq2 = mysqli_query($conn,$query2);
-											while($row = mysqli_fetch_row($kq2)){
-												echo '	<tr>
-												<td>'.$row[0].'</td>
-												<td>'.$row[1].'</td>
-												<td>'.$row[2].'</td>
-												<td>'.$row[3].'</td>
-
-												</tr>';
-											}	
-									}
-
-									?>
-								</tbody>
-							</table>
-						</div>
+					<?php include("infor.php"); ?>
 					</div>
 				</div>
 

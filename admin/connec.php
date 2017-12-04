@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root","", "demo");
+$conn = mysqli_connect("localhost", "root","", "banhngot");
 mysqli_set_charset($conn,"utf8");
 // Check connection
 if($conn === false){

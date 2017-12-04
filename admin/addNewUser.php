@@ -21,13 +21,9 @@
 				$sql="insert into account(username,password,email) values('$UserName','$password','$email')";
 				if(mysqli_query($conn,$sql))
 				{
-					header('Refresh:0;quanly.php');
+					header('Refresh:0;quanly.php?tmp=account');
 				}
-			}else
-				{
-			        //update User
-					echo "update";
-				}
+			}
 		}
 				
 	}
