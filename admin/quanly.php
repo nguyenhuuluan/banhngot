@@ -1,3 +1,10 @@
+<?php session_start(); if (!isset($_SESSION['username'])) {header('Location: index.php');}?>
+<?php
+if(isset($_POST["logout"])) {
+	$_SESSION["user_id"] = "";
+	session_destroy();
+}
+?>
 <html lang="en">
 <head>
 	<link href="../css/sb-admin.css" rel="stylesheet">
@@ -7,12 +14,12 @@
 	<!-- Custom fonts for this template-->
 	<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<meta charset="utf-8">
-	<title>admin</title>
+	<title>Admin Page</title>
 </head> 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<!-- Navigation-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-		<a class="navbar-brand" href="index.html">Welcome to ADMIN PAGE</a>
+		<a class="navbar-brand" href="quanly.php?tmp=Account">Welcome to ADMIN PAGE</a>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -28,14 +35,20 @@
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
 					<a class="nav-link" href="quanly.php?tmp=Banh">
 						<i class="fa fa-fw fa-wrench"></i>
-						<span class="nav-link-text">Quản lý bánh</span>
+						<span class="nav-link-text">Quản lý Bánh</span>
 					</a>
 				</li>
 
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
 					<a class="nav-link" href="quanly.php?tmp=LoaiBanh">
 						<i class="fa fa-fw fa-wrench"></i>
-						<span class="nav-link-text">Quản lý loại bánh</span>
+						<span class="nav-link-text">Quản lý Loại Bánh</span>
+					</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+					<a class="nav-link" href="quanly.php?tmp=KhuyenMai">
+						<i class="fa fa-fw fa-wrench"></i>
+						<span class="nav-link-text">Quản lý Khuyến Mãi</span>
 					</a>
 				</li>
 			</ul>
@@ -46,12 +59,13 @@
 					</a>
 				</li>
 			</ul>
-			<ul class="navbar-nav ml-auto">				
+			<ul class="navbar-nav ml-auto">		
+				<li class="">
+					<a href="#" style="text-decoration: none; color:gray;"> <?php echo $_SESSION['username'];  ?>&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				</li>	
 				<li class="nav-item">
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-						<i class="fa fa-fw fa-sign-out"></i>Logout</a>
+					<a href="logout.php?tmp=logout"  style="text-decoration: none; color:gray;">
+						<i class= "fa fa-fw fa-sign-out"></i>Logout</a>
 					</li>
 				</ul>
 			</div>
@@ -60,9 +74,17 @@
 			<div class="card mb-3">
 				<div class="card-header">
 					<i class="fa fa-table"></i><?php
-					if(isset($_GET["tmp"]))
-						echo 'Quản lý '.$_GET["tmp"];
-					else echo 'Quản lý Account';
+					if(isset($_GET["tmp"])){
+						echo 'Manage '.$_GET["tmp"].'<hr>';
+						echo '<a href="manage'.$_GET["tmp"].'.php?tmp=create" class="btn btn-success">Create new</a>';
+					}						
+					else {
+						echo 'Manage Account<hr>';
+						echo '<a href="manageAccount.php?tmp=create" class="btn btn-success">Create new</a>';
+					}
+
+					
+
 					?></div>
 					<div class="card-body">
 						<div class="table-responsive">
@@ -78,8 +100,9 @@
 												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='banh'";
 												$kq1 = mysqli_query($conn,$query1);
 												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												}                		
+													echo '<th>'.$row[0].'';
+												}
+												echo '</th><th>Action</th>';                		
 											}                		
 
                 							//Loai banh	
@@ -89,6 +112,7 @@
 												while($row = mysqli_fetch_row($kq1)){
 													echo '<th>'.$row[0].'</th>';
 												} 
+												echo '</th><th>Action</th>';  
 											}
                 							//Account
 											else if($_GET["tmp"]=="Account"){
@@ -97,58 +121,28 @@
 												while($row = mysqli_fetch_row($kq1)){
 													echo '<th>'.$row[0].'</th>';
 												} 
+												echo '</th><th>Action</th>';  
 											}
-										}else{
-										$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-										$kq1 = mysqli_query($conn,$query1);
-										while($row = mysqli_fetch_row($kq1)){
-											echo '<th>'.$row[0].'</th>';
-										} 
-										}
-										?>
-									</tr>
-								</thead>
-								<tfoot>
-									<tr>
-										<?php
-										include ("connec.php");
-										if(isset($_GET["tmp"]))
-										{
-                							//Banh
-											if($_GET["tmp"]=="Banh"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='banh'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												}                		
-											}                		
-
-                							//Loai banh	
-											else if($_GET["tmp"]=="LoaiBanh"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='loaibanh'";
+											//Khuyen mai
+											else if($_GET["tmp"]=="KhuyenMai"){
+												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='khuyenmai'";
 												$kq1 = mysqli_query($conn,$query1);
 												while($row = mysqli_fetch_row($kq1)){
 													echo '<th>'.$row[0].'</th>';
 												} 
-											}
-                							//Account
-											else if($_GET["tmp"]=="Account"){
-												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-												$kq1 = mysqli_query($conn,$query1);
-												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
-												} 
+												echo '</th><th>Action</th>';  
 											}
 										}else{
-										$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
-										$kq1 = mysqli_query($conn,$query1);
-										while($row = mysqli_fetch_row($kq1)){
-											echo '<th>'.$row[0].'</th>';
-										} 
+											$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
+											$kq1 = mysqli_query($conn,$query1);
+											while($row = mysqli_fetch_row($kq1)){
+												echo '<th>'.$row[0].'</th>';
+											} 
+											echo '</th><th>Action</th>';  
 										}
 										?>
 									</tr>
-								</tfoot>
+								</thead>							
 								<tbody>
 									<?php
 									if(isset($_GET["tmp"])){
@@ -163,6 +157,10 @@
 												<td>'.$row[3].'</td>
 												<td>'.$row[4].'</td>
 												<td>'.$row[5].'</td>
+												<td>
+												<a href="manageBanh.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
+												<a href="manageBanh.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												</td>
 												</tr>';
 											}	
 										}
@@ -173,7 +171,10 @@
 												echo '	<tr>
 												<td>'.$row[0].'</td>
 												<td>'.$row[1].'</td>
-
+												<td>
+												<a href="manageLoaiBanh.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
+												<a href="manageLoaiBanh.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												</td>
 												</tr>';
 											}	
 										}
@@ -186,14 +187,14 @@
 												<td>'.$row[1].'</td>
 												<td>'.$row[2].'</td>
 												<td>'.$row[3].'</td>
-
+												<td>
+												<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
+												<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												</td>
 												</tr>';
 											}	
-										}											
-									}
-									else
-									{
-										$query2= "SELECT * FROM account";
+										}	else if($_GET["tmp"]=="KhuyenMai"){
+											$query2= "SELECT * FROM khuyenmai";
 											$kq2 = mysqli_query($conn,$query2);
 											while($row = mysqli_fetch_row($kq2)){
 												echo '	<tr>
@@ -201,9 +202,33 @@
 												<td>'.$row[1].'</td>
 												<td>'.$row[2].'</td>
 												<td>'.$row[3].'</td>
-
+												<td>'.$row[4].'</td>
+												<td>'.$row[5].'</td>
+												<td>'.$row[6].'</td>
+												<td>
+												<a href="manageKhuyenmai.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
+												<a href="manageKhuyenmai.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												</td>
 												</tr>';
 											}	
+										}										
+									}
+									else
+									{
+										$query2= "SELECT * FROM account";
+										$kq2 = mysqli_query($conn,$query2);
+										while($row = mysqli_fetch_row($kq2)){
+											echo '	<tr>
+											<td>'.$row[0].'</td>
+											<td>'.$row[1].'</td>
+											<td>'.$row[2].'</td>
+											<td>'.$row[3].'</td>
+											<td>
+												<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
+												<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												</td>
+											</tr>';
+										}	
 									}
 
 									?>
