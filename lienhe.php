@@ -65,12 +65,12 @@
 								</div>
 
 								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-									<form class="navbar-form navbar-right">
-										<div class="form-group" >
-											<input type="text"  class="form-control" placeholder="Tìm kiếm sản phẩm" >
-										</div>
-										<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
-									</form>	
+									form action="search.php" method="get" class="navbar-form navbar-right">
+											<div class="form-group">
+												<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
+											</div>
+											<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
+										</form>
 									<ul class="nav navbar-nav navbar-right menubar">
 										<li><a href="index.php"><b>Trang Chủ</b></a></li>
 										<li class="dropdown">

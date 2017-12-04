@@ -70,7 +70,7 @@
 												<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
 											</div>
 											<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
-										</form>	
+										</form>
 										<ul class="nav navbar-nav navbar-right menubar">
 											<li><a href="index.php"><b>Trang Chủ</b></a></li>
 											<li class="dropdown">
@@ -90,7 +90,7 @@
 													?>																									
 												</ul>
 											</li>
-											<li><a href="khuyenmai.php" class="active"><b>Khuyến mãi</b></a></li>
+											<li><a href="khuyenmai.php"><b>Khuyến mãi</b></a></li>
 											<li><a href="lienhe.php"><b>Liên hệ</b></a></li>
 											<li class="dropdown">
 												<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
@@ -122,8 +122,8 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<ol class="breadcrumb">
-							<li><a href="index.php"><B>HOME</B></a>
-							<li class="active"><B>Khuyến Mãi</B></a></li>
+							<li><a href="index.html"><B>HOME</B></a>
+							</li>
 						</ol>
 					</div>
 				</div>
@@ -156,8 +156,59 @@
 					
 					<div class="col-md-9">
 						<div class="row">
-							
+							<h1>Kết quả tìm kiếm:</h1>
 
+								<?php
+								$search = trim($_GET['textsearch']);
+ 								$query1 = "select * from banh where tenbanh like '%$search%' or mota like '%$search%' or giaban like '%$search%'";
+ 								$kq1 = mysqli_query($conn,$query1);
+ 								$tongsp = mysqli_num_rows($kq1);
+ 								$sosp= 6;
+ 								$sotrang = ceil($tongsp / $sosp);
+ 								if(!isset($_GET["p"]))
+								$p = 1;
+								else
+								$p = $_GET["p"];
+								$x = ($p - 1)*$sosp;
+
+								$query2 = "select * from banh where tenbanh like '%$search%' or mota like '%$search%' or giaban like '%$search%' limit ".$x.",".$sosp;
+								$kq2 = mysqli_query($conn,$query2);
+
+
+ 								while ($row = mysqli_fetch_row($kq2)){
+ 									echo'
+										<div class="col-sm-6 col-md-4">
+											<div class="thumbnail">
+												<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a "></a>
+												<div class="caption">
+													<h4> <div align="center"><a2>'.$row[1].'</a2></div></h4>	
+													<p><div align="center"><b2>Giá: '.$row[2].' VND</b2></div></p>	
+													<p><div align="center"><button type="submit" class="btn btn-primary">Đặt Mua</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Chi Tiết</button></div></p>	
+												</div>
+											</div>
+										</div>	
+ 									';
+ 								}
+ 								?>	
+
+						</div>
+						<div class="row" align="center">
+							
+							<ul class="pagination">
+								
+								<?php
+									for ($i=1;$i<=$sotrang;$i++)
+									{
+										if($i==$p)
+											echo '<li  class="active"><a href="#">'.$i.'</a></li>';
+										else{
+
+											echo '<li><a href="index.php?p='.$i.'">'.$i.'</a></li>';
+									}
+									}								
+								?>
+
+							</ul>
 						</div>
 					</div>								
 				</div>
