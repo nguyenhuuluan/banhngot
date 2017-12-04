@@ -91,7 +91,7 @@
 												</ul>
 											</li>
 											<li><a href="KhuyenMai.php"><b>Khuyến mãi</b></a></li>
-											<li><a href="LienHe.html"><b>Liên hệ</b></a></li>
+											<li><a href="LienHe.php"><b>Liên hệ</b></a></li>
 											<li class="dropdown">
 												<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 												<ul class="dropdown-menu">
@@ -139,8 +139,8 @@
 						<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
 						<div class="list-group">
 							<b>
-								  <div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangnhap.html">Đăng Nhập</a></div><br>
-								   <div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.html">Tạo Mới Tài Khoản</a></div><br>
+								  <div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="login.php">Đăng Nhập</a></div><br>
+								   <div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.php">Tạo Mới Tài Khoản</a></div><br>
 							</b>
 						</div>
 						<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>

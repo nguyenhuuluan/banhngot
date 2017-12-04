@@ -132,8 +132,8 @@
 								<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
 								<div class="list-group">
 									<b>
-										<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangnhap.html">Đăng Nhập</a></div><br>
-										<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.html">Tạo Mới Tài Khoản</a></div><br>
+										<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="login.php">Đăng Nhập</a></div><br>
+										<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.php">Tạo Mới Tài Khoản</a></div><br>
 									</b>
 								</div>
 								<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>

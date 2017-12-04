@@ -122,7 +122,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<ol class="breadcrumb">
-								<li><a href="index.html"><B>HOME</B></a>
+								<li><a href="index.php"><B>HOME</B></a>
 								<li class="active"><B>Liên hệ</B></a></li>
 								</li>
 							</ol>
@@ -133,8 +133,8 @@
 							<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
 							<div class="list-group">
 								<b>
-									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangnhap.html">Đăng Nhập</a></div><br>
-									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.html">Tạo Mới Tài Khoản</a></div><br>
+									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="login.php">Đăng Nhập</a></div><br>
+									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.php">Tạo Mới Tài Khoản</a></div><br>
 								</b>
 							</div>
 							<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>
