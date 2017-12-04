@@ -14,6 +14,48 @@ if(isset($_GET["action"]))
 		}  
 	}  
 }   ?>
+
+
+<?php
+if(isset($_POST['thanhtoan'])){
+	include('connec.php');
+	if(isset($_SESSION["user_id"])){
+	$total = 0;
+	$makh = $_SESSION["user_id"];
+	if(!empty($_SESSION["shopping_cart"]))  
+	{ 
+
+		foreach($_SESSION["shopping_cart"] as $keys => $values)  
+		{  
+			$total = $total + ($values["item_quantity"] * $values["item_price"]);  
+		}
+	}
+	$sql="insert into hoadon(tongtien, makh) values('$total', $makh)";
+	if(mysqli_query($conn,$sql))
+	{	
+		$sql2 = "select id from hoadon order by ngaytao desc";
+		$result2 = mysqli_query($conn,$sql2);
+		$row2 = mysqli_fetch_array($result2);
+		foreach($_SESSION["shopping_cart"] as $keys => $values)  
+		{  
+			
+			$mahd = $row2[0];
+			$masp = $values["item_id"];
+			$soluong = $values["item_quantity"];
+			$dongia = $values["item_price"];
+			$query = "insert into chitiethoadon(mahd, masp, soluong, dongia) values('$mahd', '$masp', '$soluong', '$dongia')";
+			mysqli_query($conn,$query); 
+		}
+
+		header('Refresh:0;thankyou.php');
+		$_SESSION["shopping_cart"]= null;
+	}
+	}else{
+		header("location: login.php");
+	}
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +69,7 @@ if(isset($_GET["action"]))
 	<link href="css/mystyle.css" rel="stylesheet">
 </head>
 <body>
-	
+
 	<div class="container">  
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
@@ -106,20 +148,22 @@ if(isset($_GET["action"]))
 												?>																									
 											</ul>
 										</li>
-										<li><a href="khuyenmai.php" class="active"><b>Khuyến mãi</b></a></li>
+										<li><a href="khuyenmai.php"><b>Khuyến mãi</b></a></li>
 										<li><a href="lienhe.php"><b>Liên hệ</b></a></li>
 										<li class="dropdown">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
-											<ul class="dropdown-menu">
+												<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b>&nbsp;&nbsp;&nbsp;0 Sản Phẩm</b>
-														<div class="cl">&nbsp;</div>
-														<span class="glyphicon glyphicon-usd"><b> 0 VNĐ</b></span></a>
-													</li>
-													<li>
-														<a class = "t"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thanh Toán</b></a>
-													</li>										
-												</ul>
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
+
+													echo $sl; ?> Sản Phẩm</b>
+													
+												</li>
+												<li>
+													<a href="cart.php" class = "t"><b>Thanh Toán</b></a>
+												</li>										
+											</ul>
+										</ul>
 											</ul>
 										</div><!-- /.navbar-collapse -->
 									</div><!-- /.container-fluid -->
@@ -139,7 +183,7 @@ if(isset($_GET["action"]))
 						<div class="col-lg-12">
 							<ol class="breadcrumb">
 								<li><a href="index.php"><B>HOME</B></a>
-									<li class="active"><B>Khuyến Mãi</B></a></li>
+									<li class="active"><B>Thanh toán</B></a></li>
 								</ol>
 							</div>
 						</div>
@@ -177,90 +221,96 @@ if(isset($_GET["action"]))
 									</b>
 								</div>
 							</div>
-							
+
 							<div class="col-md-9">
 								<div class="row">
 									<h1>Giỏ Hàng Của Bạn:</h1>
 									<div class="col-sm-12">
 										<div class="thumbnail">
 											<div class="table-responsive">  
-												<table class="table table-bordered">  
-													<tr>  
-														<th width="40%">Item Name</th>  
-														<th width="10%">Quantity</th>  
-														<th width="20%">Price</th>  
-														<th width="15%">Total</th>  
-														<th width="5%">Action</th>  
-													</tr>  
-													<?php   
-													if(!empty($_SESSION["shopping_cart"]))  
-													{  
-														$total = 0;  
-														foreach($_SESSION["shopping_cart"] as $keys => $values)  
+												<form method="POST" action="">
+													<table class="table table-bordered">  
+														<tr>  
+															<th width="40%">Item Name</th>  
+															<th width="10%">Quantity</th>  
+															<th width="20%">Price</th>  
+															<th width="15%">Total</th>  
+															<th width="5%">Action</th>  
+														</tr>  
+														<?php   
+														if(!empty($_SESSION["shopping_cart"]))  
 														{  
+															$total = 0;  
+															foreach($_SESSION["shopping_cart"] as $keys => $values)  
+															{  
+																?>  
+																<tr>  
+																	<td><?php echo $values["item_name"]; ?></td>  
+																	<td><?php echo $values["item_quantity"]; ?></td>  
+																	<td align="right">$ <?php echo number_format($values["item_price"]); ?></td>  
+																	<td align="right">$ <?php echo number_format($values["item_quantity"] * $values["item_price"]); ?></td>  
+																	<td><a href="cart.php?action=delete&id=<?php echo $values["item_id"]; ?>"><span class="text-danger">Remove</span></a></td>  
+																</tr>  
+																<?php  
+																$total = $total + ($values["item_quantity"] * $values["item_price"]);  
+															}  
 															?>  
 															<tr>  
-																<td><?php echo $values["item_name"]; ?></td>  
-																<td><?php echo $values["item_quantity"]; ?></td>  
-																<td>$ <?php echo $values["item_price"]; ?></td>  
-																<td>$ <?php echo number_format($values["item_quantity"] * $values["item_price"], 2); ?></td>  
-																<td><a href="cart.php?action=delete&id=<?php echo $values["item_id"]; ?>"><span class="text-danger">Remove</span></a></td>  
-															</tr>  
-															<?php  
-															$total = $total + ($values["item_quantity"] * $values["item_price"]);  
-														}  
-														?>  
-														<tr>  
-															<td colspan="3" align="right">Total</td>  
-															<td align="right">$ <?php echo number_format($total, 2); ?></td>  
-															<td></td>  
-														</tr>  
-														<?php  
-													}  
-													?>  
-												</table>   	        
-											</div>	
+																<td colspan="3" align="right"><strong>Total<strong></td>  
+																	<td align="right">$ <?php echo number_format($total); ?></td>  
+																	<td></td>  
+																</tr>
+																<tr>  
+																	<td colspan="3"></td>
+																	<td  colspan="2" align="center"><input type="submit" value="Thanh toán" name="thanhtoan" class="btn btn-success"></td>  
+																</tr>  
+																<?php  
+															}  
+															?>  
+														</table> 
+													</form>  	        
+												</div>	
 
+											</div>
+										</div>								
+									</div>
+								</div>
+							</div>
+							<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+							<!-- Include all compiled plugins (below), or include individual files as needed -->
+							<script src="js/bootstrap.min.js"></script>
+							<!-- Latest compiled and minified JavaScript -->
+							<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+							<div class="container"> 
+							</div>
+						</body>
+						<footer class="footer-s">
+
+							<div class="panel">
+								<div class="panel-footer">
+									<div class= "container">
+										<div class="col-lg-3" >
+											<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 1: TP.Hồ Chí Minh</h4> 
+											<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
+											<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
+											<p>Copyright &copy; </p>
 										</div>
-									</div>								
-								</div>
-							</div>
-						</div>
-						<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-						<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-						<!-- Include all compiled plugins (below), or include individual files as needed -->
-						<script src="js/bootstrap.min.js"></script>
-						<!-- Latest compiled and minified JavaScript -->
-						<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-						<div class="container"> 
-						</div>
-					</body>
-					<footer class="footer-s">
-
-						<div class="panel">
-							<div class="panel-footer">
-								<div class= "container">
-									<div class="col-lg-3" >
-										<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 1: TP.Hồ Chí Minh</h4> 
-										<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
-										<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
-										<p>Copyright &copy; </p>
-									</div>
-									<div class="col-lg-3" >
-										<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-									</div>
-									<div class="col-lg-3" >
-										<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 2: TP.Hồ Chí Minh</h4> 
-										<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
-										<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
-										<p>Copyright &copy; </p>
-									</div>
-									<div class="col-lg-3" >
-										<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+										<div class="col-lg-3" >
+											<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+										</div>
+										<div class="col-lg-3" >
+											<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 2: TP.Hồ Chí Minh</h4> 
+											<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
+											<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
+											<p>Copyright &copy; </p>
+										</div>
+										<div class="col-lg-3" >
+											<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 
-					</footer>
-					</html>-=
+						</footer>
+						</html>

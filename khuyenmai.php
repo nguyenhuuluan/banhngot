@@ -1,3 +1,68 @@
+<?php
+session_start();
+
+include('connec.php'); 
+
+ if(isset($_POST["add_to_cart"]))  
+ {  
+      if(isset($_SESSION["shopping_cart"]))  
+      {  
+           $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");  
+           if(!in_array($_GET["id"], $item_array_id))  
+           {  
+                $count = count($_SESSION["shopping_cart"]);  
+                $item_array = array(  
+                     'item_id'               =>     $_GET["id"],  
+                     'item_name'               =>     $_POST["hidden_name"],  
+                     'item_price'          =>     $_POST["hidden_price"],  
+                     'item_quantity'          =>     $_POST["quantity"]  
+                );  
+                $_SESSION["shopping_cart"][$count] = $item_array;  
+           }  
+           else  
+           {  
+                echo '<script>alert("Item Already Added")</script>';
+
+
+                  echo '<script>window.location="index.php"</script>';  
+           }  
+      }  
+      else  
+      {  
+           $item_array = array(  
+                'item_id'               =>     $_GET["id"],  
+                'item_name'               =>     $_POST["hidden_name"],  
+                'item_price'          =>     $_POST["hidden_price"],  
+                'item_quantity'          =>     $_POST["quantity"]  
+           );  
+           $_SESSION["shopping_cart"][0] = $item_array;  
+      }  
+ }  
+ if(isset($_GET["action"]))  
+ {  
+      if($_GET["action"] == "delete")  
+      {  
+           foreach($_SESSION["shopping_cart"] as $keys => $values)  
+           {  
+                if($values["item_id"] == $_GET["id"])  
+                {  
+                     unset($_SESSION["shopping_cart"][$keys]);  
+                     echo '<script>alert("Item Removed")</script>';  
+                     echo '<script>window.location="index.php"</script>';  
+                }  
+           }  
+      }  
+ }  
+
+
+
+
+if(isset($_POST["logout"])) {
+	$_SESSION["user_id"] = "";
+	session_destroy();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -96,12 +161,13 @@
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 											<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b>&nbsp;&nbsp;&nbsp;0 Sản Phẩm</b>
-														<div class="cl">&nbsp;</div>
-														<span class="glyphicon glyphicon-usd"><b> 0 VNĐ</b></span></a>
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
+
+													echo $sl; ?> Sản Phẩm</b>
+														
 													</li>
 													<li>
-														<a class = "t"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thanh Toán</b></a>
+														<a href="cart.php" class = "t"><b>Thanh Toán</b></a>
 													</li>										
 												</ul>
 											</ul>
@@ -131,11 +197,22 @@
 							<div class="col-md-3" >
 								<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
 								<div class="list-group">
-									<b>
-										<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="login.php">Đăng Nhập</a></div><br>
-										<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.php">Tạo Mới Tài Khoản</a></div><br>
-									</b>
-								</div>
+								<b>
+									<div ><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									<?php 
+									 if (!isset($_SESSION['username'])) 
+									 	{echo "<a href='login.php'>Đăng nhập</a>";
+									 	echo "<br><div><span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><a href='taotaikhoan.php'>Tạo Mới Tài Khoản</a>
+									</div><br>";
+									}else{
+										echo 'Tên tài khoản:'.$_SESSION['username'].'<br/><hr>';
+										echo '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="color: red"></span><a href="logout.php">Log out</a>';
+									}
+
+									 	?>
+									</div><br>
+								</b>
+							</div>
 								<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>
 								<div class="list-group">
 									<b>
@@ -178,21 +255,26 @@
 
 									while ($row = mysqli_fetch_row($kq2)){
 										echo'
-										<div class="col-sm-6 col-md-4">
-										<div class="thumbnail">';
+										<div class="col-sm-6 col-md-4">';
 
 										$query = "select hinhanh from banh where id = '$row[1]'";
 										$kq3 = mysqli_query($conn,$query);
 										$row2 = mysqli_fetch_array($kq3);
 										echo '
-										<a href="#"><img src="img/'.$row2[0].'" alt="..." width="200" class="a "></a>
-										<div class="caption">
-										<h4> <div align="center"><a2>'.$row[2].'</a2></div></h4>	
-										<p><div align="center"><b style= "color:red; ">Giá khuyến mãi: '.number_format($row[3]).' VND</b></div></p>	
-										<p><div align="center"><button type="submit" class="btn btn-primary">Đặt Mua</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Chi Tiết</button></div></p>	
-										</div>
-										</div>
-										</div>	
+									<form method="post" action="khuyenmai.php?action=add&id='.$row[1].'"> 
+									<div class="thumbnail">
+									<a href="#"><img src="img/'.$row2[0].'" alt="..." width="200" class="a "></a>
+									<div class="caption">
+									<h4> <div align="center"><a2>'.$row2[0].'</a2></div></h4>	
+									<p><div align="center"><b style="color:red">Giá khuyến mãi: '.number_format($row[3]).' VND</b></div></p>	
+									<p><input type="text" name="quantity" class="form-control" value="1" /> </p>
+									<input type="hidden" name="hidden_name" value="'.$row[2].'">
+									<input type="hidden" name="hidden_price" value="'.$row[3].'">
+									<p><div align="center"><input type="submit" name="add_to_cart" class="btn btn-primary" value="Đặt Mua" />  &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Chi Tiết</button></div></p>	
+									</div>
+									</div>
+									</div>	
+									</form>
 										';
 									}
 									?>					

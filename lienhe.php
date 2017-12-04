@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(isset($_POST["logout"])) {
+	$_SESSION["user_id"] = "";
+	session_destroy();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,11 +73,11 @@
 
 								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 									<form action="search.php" method="get" class="navbar-form navbar-right">
-											<div class="form-group">
-												<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
-											</div>
-											<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
-										</form>
+										<div class="form-group">
+											<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
+										</div>
+										<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
+									</form>
 									<ul class="nav navbar-nav navbar-right menubar">
 										<li><a href="index.php"><b>Trang Chủ</b></a></li>
 										<li class="dropdown">
@@ -96,146 +103,159 @@
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 											<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b>&nbsp;&nbsp;&nbsp;0 Sản Phẩm</b>
-														<div class="cl">&nbsp;</div>
-														<span class="glyphicon glyphicon-usd"><b> 0 VNĐ</b></span></a>
-													</li>
-													<li>
-														<a class = "t"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thanh Toán</b></a>
-													</li>										
-												</ul>
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
+
+													echo $sl; ?> Sản Phẩm</b>
+													
+												</li>
+												<li>
+													<a href="cart.php" class = "t"><b>Thanh Toán</b></a>
+												</li>										
 											</ul>
-										</div><!-- /.navbar-collapse -->
-									</div><!-- /.container-fluid -->
-								</nav>
-							</div>	
-						</div><!--End of row -->
+										</ul>
+									</ul>
+								</div><!-- /.navbar-collapse -->
+							</div><!-- /.container-fluid -->
+						</nav>
+					</div>	
+				</div><!--End of row -->
 
-					</div><!--End of container -->
+			</div><!--End of container -->
 
+		</div>
+	</header> <!--End of header -->
+
+	<div class="container">
+		<hr>
+		<div class ="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<ol class="breadcrumb">
+						<li><a href="index.php"><B>HOME</B></a>
+							<li class="active"><B>Liên hệ</B></a></li>
+						</li>
+					</ol>
 				</div>
-			</header> <!--End of header -->
+			</div>
+			<div class="row">
+				<div class="col-md-3" >
+					<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
+					<div class="list-group">
+						<b>
+							<div ><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								<?php 
+								if (!isset($_SESSION['username'])) 
+									{echo "<a href='login.php'>Đăng nhập</a>";
+								echo "<br><div><span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><a href='taotaikhoan.php'>Tạo Mới Tài Khoản</a>
+								</div><br>";
+							}else{
+								echo 'Tên tài khoản:'.$_SESSION['username'].'<br/><hr>';
+								echo '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true" style="color: red"></span><a href="logout.php">Log out</a>';
+							}
 
-			<div class="container">
-				<hr>
-				<div class ="container-fluid">
-					<div class="row">
-						<div class="col-lg-12">
-							<ol class="breadcrumb">
-								<li><a href="index.php"><B>HOME</B></a>
-								<li class="active"><B>Liên hệ</B></a></li>
-								</li>
-							</ol>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3" >
-							<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
-							<div class="list-group">
-								<b>
-									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="login.php">Đăng Nhập</a></div><br>
-									<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.php">Tạo Mới Tài Khoản</a></div><br>
-								</b>
-							</div>
-							<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>
-							<div class="list-group">
-								<b>
-									<?php
+							?>
+						</div><br>
+					</b>
+				</div>
+				<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>
+				<div class="list-group">
+					<b>
+						<?php
 
-									$query ="select * from loaibanh";
-									$kq = mysqli_query($conn,$query);
-									while($row = mysqli_fetch_row($kq)){
+						$query ="select * from loaibanh";
+						$kq = mysqli_query($conn,$query);
+						while($row = mysqli_fetch_row($kq)){
 
-										echo '
-										<a href="loaisp.php?id='.$row[0].'" class="list-group-item"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>&nbsp <a2>'.$row[1].'</a2>
-										</a>';
-									}
-									?>
-								</b>
-							</div>
-						</div>
+							echo '
+							<a href="loaisp.php?id='.$row[0].'" class="list-group-item"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>&nbsp <a2>'.$row[1].'</a2>
+							</a>';
+						}
+						?>
+					</b>
+				</div>
+			</div>
 
-						<div class="col-md-9">
-							<div class="row">
-								<div class="col-md-12"> 
-									<h3 align="center">Gửi tin nhắn cho chúng tôi</h3> 
-									<form name="sentMessage" id="contactForm" novalidate> 
-										<div class="control-group form-group"> <div class="controls"> 
-											<label>Họ và tên:</label> 
-											<input type="text" class="form-control" id="name" required data-validation-required-message="Please enter your name."> 
-											<p class="help-block">
-											</p> 
-										</div> 
-									</div> 
-									<div class="control-group form-group"> 
-										<div class="controls"> 
-											<label>Số điện thoại:</label> 
-											<input type="tel" class="form-control" id="phone" required data-validation-required-message="Please enter your phone number."> 
-										</div> 
-									</div> 
-									<div class="control-group form-group"> 
-										<div class="controls"> 
-											<label>Địa chỉ Email:</label> 
-											<input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address."> 
-										</div> 
-									</div> 
-									<div class="control-group form-group"> 
-										<div class="controls"> 
-											<label>Tin nhắn:</label> 
-											<textarea rows="10" cols="100" class="form-control" id="message" required data-validation-required-message="Please enter your message" maxlength="999" style="resize:none">
-											</textarea> 
-										</div> 
-									</div> 
-									<div id="success">
-									</div> <!-- For success/fail messages --> 
-									<div align="center">
-										<button type="submit" class="btn btn-primary">Gửi tin nhắn
-										</button> 
-										<button type="button" class="btn btn-primary" onclick="myFunction()">Xóa
-										</button>
-									</div>
-								</form> 
+			<div class="col-md-9">
+				<div class="row">
+					<div class="col-md-12"> 
+						<h3 align="center">Gửi tin nhắn cho chúng tôi</h3> 
+						<form name="sentMessage" id="contactForm" novalidate> 
+							<div class="control-group form-group"> <div class="controls"> 
+								<label>Họ và tên:</label> 
+								<input type="text" class="form-control" id="name" required data-validation-required-message="Please enter your name."> 
+								<p class="help-block">
+								</p> 
 							</div> 
+						</div> 
+						<div class="control-group form-group"> 
+							<div class="controls"> 
+								<label>Số điện thoại:</label> 
+								<input type="tel" class="form-control" id="phone" required data-validation-required-message="Please enter your phone number."> 
+							</div> 
+						</div> 
+						<div class="control-group form-group"> 
+							<div class="controls"> 
+								<label>Địa chỉ Email:</label> 
+								<input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address."> 
+							</div> 
+						</div> 
+						<div class="control-group form-group"> 
+							<div class="controls"> 
+								<label>Tin nhắn:</label> 
+								<textarea rows="10" cols="100" class="form-control" id="message" required data-validation-required-message="Please enter your message" maxlength="999" style="resize:none">
+								</textarea> 
+							</div> 
+						</div> 
+						<div id="success">
+						</div> <!-- For success/fail messages --> 
+						<div align="center">
+							<button type="submit" class="btn btn-primary">Gửi tin nhắn
+							</button> 
+							<button type="button" class="btn btn-primary" onclick="myFunction()">Xóa
+							</button>
 						</div>
-					</div>								
+					</form> 
+				</div> 
+			</div>
+		</div>								
+	</div>
+</div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<div class="container"> 
+</div>
+</body>
+<footer class="footer-s">
+
+	<div class="panel">
+		<div class="panel-footer">
+			<div class= "container">
+				<div class="col-lg-3" >
+					<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 1: TP.Hồ Chí Minh</h4> 
+					<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
+					<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
+					<p>Copyright &copy; </p>
+				</div>
+				<div class="col-lg-3" >
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+				</div>
+				<div class="col-lg-3" >
+					<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 2: TP.Hồ Chí Minh</h4> 
+					<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
+					<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
+					<p>Copyright &copy; </p>
+				</div>
+				<div class="col-lg-3" >
+					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
 				</div>
 			</div>
 		</div>
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<!-- Include all compiled plugins (below), or include individual files as needed -->
-		<script src="js/bootstrap.min.js"></script>
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<div class="container"> 
-		</div>
-	</body>
-	<footer class="footer-s">
+	</div>
 
-		<div class="panel">
-			<div class="panel-footer">
-				<div class= "container">
-					<div class="col-lg-3" >
-						<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 1: TP.Hồ Chí Minh</h4> 
-						<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
-						<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
-						<p>Copyright &copy; </p>
-					</div>
-					<div class="col-lg-3" >
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-					</div>
-					<div class="col-lg-3" >
-						<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 2: TP.Hồ Chí Minh</h4> 
-						<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
-						<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
-						<p>Copyright &copy; </p>
-					</div>
-					<div class="col-lg-3" >
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</footer>
-	</html>
+</footer>
+</html>
