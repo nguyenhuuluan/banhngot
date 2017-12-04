@@ -105,7 +105,7 @@
 													
 												</ul>
 											</li>
-											<li><a href="KhuyenMai.html"><b>Khuyến mãi</b></a></li>
+											<li><a href="khuyenmai.php"><b>Khuyến mãi</b></a></li>
 											<li><a href="LienHe.html"><b>Liên hệ</b></a></li>
 											<li class="dropdown">
 												<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>

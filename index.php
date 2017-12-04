@@ -182,7 +182,7 @@
 												<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a "></a>
 												<div class="caption">
 													<h4> <div align="center"><a2>'.$row[1].'</a2></div></h4>	
-													<p><div align="center"><b2>Giá: '.$row[2].' VND</b2></div></p>	
+													<p><div align="center"><b2>Giá: '.number_format($row[2]).' VND</b2></div></p>	
 													<p><div align="center"><button type="submit" class="btn btn-primary">Đặt Mua</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Chi Tiết</button></div></p>	
 												</div>
 											</div>

@@ -65,7 +65,7 @@
 								</div>
 
 								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-									form action="search.php" method="get" class="navbar-form navbar-right">
+									<form action="search.php" method="get" class="navbar-form navbar-right">
 											<div class="form-group">
 												<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
 											</div>
