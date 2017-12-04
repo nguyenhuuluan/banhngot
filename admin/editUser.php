@@ -20,7 +20,7 @@
 				$query= mysqli_query($conn,$sql);
 				if($query)
 				{
-					header('Refresh:0;quanly.php?tmp=Account');		
+					header('Refresh:0;quanly.php');		
 				}
 			}
 		}
@@ -37,27 +37,7 @@
 			$password = $row[2];
 			$email = $row[3];
 		}
-		echo'	<form action="" method="post">
-		<table>
-			<tr>
-				<td>UserName</td>
-				<td><input type="text" name="txtuser" value="'.$UserName.'" required><input type="hidden" name="txtid" value="'.$userID.'>"/> </td>
-			</tr>
-			<tr>
-				<td>Password</td>
-				<td><input type="password" name="txtpass" value="'.$password.'" required></td>
-			</tr>
-			<tr>
-				<td>Email</td>
-				<td><input type="text" name="txtemail" value="'.$email.'" required></td>
-			</tr>
-			<tr><td colspan="2"><span style="color:red;">'.$error.'</span></tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" name="btnSave" value="Save" ></td>
-			</tr>
-		</table>
-	</form>';
+		
 	}
 		if(isset($_GET['deleted']))
 	{
@@ -65,10 +45,30 @@
 		$query=mysqli_query($conn,$sql);
 		if($query)
 		{
-			header('Refresh:0;quanly.php?tmp=account');		
+			header('Refresh:0;quanly.php');		
 		}
 		
 	}
 ?>
-
+	<form action="" method="post">
+		<table>
+			<tr>
+				<td>UserName</td>
+				<td><input type="text" name="txtuser" value="<?php echo $UserName; ?>"><input type="hidden" name="txtid" value="<?php echo $userID; ?>>"/> </td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="txtpass" value="<?php echo $password;?>"></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><input type="text" name="txtemail" value="<?php echo $email;?>"></td>
+			</tr>
+			<tr><td colspan="2"><span style="color:red;"><?php echo $error;?> </span></tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" name="btnSave" value="Save" ></td>
+			</tr>
+		</table>
+	</form>
 	

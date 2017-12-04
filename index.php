@@ -1,55 +1,3 @@
-<?php   
- session_start();  
- $connect = mysqli_connect("localhost", "root", "", "demo");  
- if(isset($_POST["add_to_cart"]))  
- {  
-      if(isset($_SESSION["shopping_cart"]))  
-      {  
-           $item_array_id = array_column($_SESSION["shopping_cart"], "item_id");  
-           if(!in_array($_GET["id"], $item_array_id))  
-           {  
-                $count = count($_SESSION["shopping_cart"]);  
-                $item_array = array(  
-                     'item_id'               =>     $_GET["id"],  
-                     'item_name'               =>     $_POST["hidden_name"],  
-                     'item_price'          =>     $_POST["hidden_price"],  
-                     'item_quantity'          =>     $_POST["quantity"]  
-                );  
-                $_SESSION["shopping_cart"][$count] = $item_array;  
-           }  
-           else  
-           {  
-                echo '<script>alert("Item Already Added")</script>';  
-                echo '<script>window.location="index.php"</script>';  
-           }  
-      }  
-      else  
-      {  
-           $item_array = array(  
-                'item_id'               =>     $_GET["id"],  
-                'item_name'               =>     $_POST["hidden_name"],  
-                'item_price'          =>     $_POST["hidden_price"],  
-                'item_quantity'          =>     $_POST["quantity"]  
-           );  
-           $_SESSION["shopping_cart"][0] = $item_array;  
-      }  
- }  
- if(isset($_GET["action"]))  
- {  
-      if($_GET["action"] == "delete")  
-      {  
-           foreach($_SESSION["shopping_cart"] as $keys => $values)  
-           {  
-                if($values["item_id"] == $_GET["id"])  
-                {  
-                     unset($_SESSION["shopping_cart"][$keys]);  
-                     echo '<script>alert("Item Removed")</script>';  
-                     echo '<script>window.location="index.php"</script>';  
-                }  
-           }  
-      }  
- }  
- ?>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,7 +92,17 @@
 											</li>
 											<li><a href="khuyenmai.php"><b>Khuyến mãi</b></a></li>
 											<li><a href="lienhe.php"><b>Liên hệ</b></a></li>
-											<li><a href="cart.php"><b>Giỏ Hàng</b></li>										
+											<li class="dropdown">
+												<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
+												<ul class="dropdown-menu">
+													<li>
+														<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b>&nbsp;&nbsp;&nbsp;0 Sản Phẩm</b>
+														  <div class="cl">&nbsp;</div>
+														 <span class="glyphicon glyphicon-usd"><b> 0 VNĐ</b></span></a>
+													</li>
+													<li>
+														<a class = "t"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thanh Toán</b></a>
+													</li>										
 												</ul>
 										</ul>
 									</div><!-- /.navbar-collapse -->
@@ -164,7 +122,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<ol class="breadcrumb">
-							<li><a href="index.php"><B>HOME</B></a>
+							<li><a href="index.html"><B>HOME</B></a>
 							</li>
 						</ol>
 					</div>
@@ -174,16 +132,8 @@
 						<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp TÀI KHOẢN</B></p>
 						<div class="list-group">
 							<b>
-								 <?php 
-								if (isset($_SESSION['username']) && $_SESSION['username']){
-								  echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>Bạn Đăng Nhập Với ' .$_SESSION['username']."</div><br/>";
-								  echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>Click Vào Đây Để <a href="logout.php">Logout</a></div><br/>';
-								  }
-								  else{
-         						  	echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>Vui Lòng <a href="dangnhap.php">Đăng Nhập</a></div><br/>';
-         						  	echo '<div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangki.php">Đăng Kí</a></div><br/>';
-      							 }
-								 ?>
+								  <div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="dangnhap.html">Đăng Nhập</a></div><br>
+								   <div align="center"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><a href="taotaikhoan.html">Tạo Mới Tài Khoản</a></div><br>
 							</b>
 						</div>
 						<p class="lead k"> &nbsp <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span><B> &nbsp SẢN PHẨM</B></p>
@@ -223,26 +173,20 @@
 
 								$query2 = "select * from banh limit ".$x.",".$sosp;
 								$kq2 = mysqli_query($conn,$query2);
-								$query = "SELECT * FROM banh ORDER BY id ASC";  
-            				    $result = mysqli_query($connect, $query);  	
+
 
  								while ($row = mysqli_fetch_row($kq2)){
  									echo'
 										<div class="col-sm-6 col-md-4">
-										   <form method="post" action="index.php?action=add&id='.$row[0].'"> 
 											<div class="thumbnail">
 												<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a "></a>
 												<div class="caption">
 													<h4> <div align="center"><a2>'.$row[1].'</a2></div></h4>	
 													<p><div align="center"><b2>Giá: '.$row[2].' VND</b2></div></p>	
-													<p><input type="text" name="quantity" class="form-control" value="1" /> </p>
-													<input type="hidden" name="hidden_name" value="'.$row[1].'">
-                               <input type="hidden" name="hidden_price" value="'.$row[2].'">
-													<p><div align="center"><input type="submit" name="add_to_cart" class="btn btn-primary" value="Đặt Mua" />  &nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Chi Tiết</button></div></p>	
+													<p><div align="center"><button type="submit" class="btn btn-primary">Đặt Mua</button>&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Chi Tiết</button></div></p>	
 												</div>
 											</div>
 										</div>	
-										</form>
  									';
  								}
  								?>	
@@ -299,8 +243,12 @@
 						<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
 						<p>Copyright &copy; </p>
 					</div>
+					<div class="col-lg-3" >
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+					</div>
 				</div>
 			</div>
 		</div>
+
 	</footer>
 	</html>
