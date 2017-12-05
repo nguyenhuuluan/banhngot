@@ -51,6 +51,12 @@ if(isset($_POST["logout"])) {
 						<span class="nav-link-text">Quản lý Khuyến Mãi</span>
 					</a>
 				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+					<a class="nav-link" href="quanly.php?tmp=Hoadon">
+						<i class="fa fa-fw fa-wrench"></i>
+						<span class="nav-link-text">Quản lý Hóa đơn</span>
+					</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav sidenav-toggler">
 				<li class="nav-item">
@@ -132,6 +138,14 @@ if(isset($_POST["logout"])) {
 												} 
 												echo '</th><th>Action</th>';  
 											}
+											else if($_GET["tmp"]=="Hoadon"){
+												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='hoadon'";
+												$kq1 = mysqli_query($conn,$query1);
+												while($row = mysqli_fetch_row($kq1)){
+													echo '<th>'.$row[0].'</th>';
+												} 
+												echo '</th><th>Action</th>';  
+											}
 										}else{
 											$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
 											$kq1 = mysqli_query($conn,$query1);
@@ -193,7 +207,24 @@ if(isset($_POST["logout"])) {
 												</td>
 												</tr>';
 											}	
-										}	else if($_GET["tmp"]=="KhuyenMai"){
+										}else if($_GET["tmp"]=="Hoadon"){
+											$query2= "SELECT * FROM Hoadon";
+											$kq2 = mysqli_query($conn,$query2);
+											while($row = mysqli_fetch_row($kq2)){
+												echo '	<tr>
+												<td>'.$row[0].'</td>
+												<td>'.$row[1].'</td>
+												<td>'.$row[2].'</td>
+												<td>'.$row[3].'</td>
+												<td>
+												<a href="detailHoadon.php?id='.$row[0].'&&tmp=detail" class="btn btn-warning">Detail</a>
+												</td>
+												</tr>';
+											}	
+										}
+
+
+											else if($_GET["tmp"]=="KhuyenMai"){
 											$query2= "SELECT * FROM khuyenmai";
 											$kq2 = mysqli_query($conn,$query2);
 											while($row = mysqli_fetch_row($kq2)){
@@ -224,9 +255,9 @@ if(isset($_POST["logout"])) {
 											<td>'.$row[2].'</td>
 											<td>'.$row[3].'</td>
 											<td>
-												<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
-												<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
-												</td>
+											<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
+											<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+											</td>
 											</tr>';
 										}	
 									}
