@@ -208,7 +208,7 @@ if(isset($_POST["logout"])) {
 												</tr>';
 											}	
 										}else if($_GET["tmp"]=="Hoadon"){
-											$query2= "SELECT * FROM Hoadon";
+											$query2= "SELECT * FROM hoadon";
 											$kq2 = mysqli_query($conn,$query2);
 											while($row = mysqli_fetch_row($kq2)){
 												echo '	<tr>
