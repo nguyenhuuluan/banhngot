@@ -179,40 +179,38 @@ if(isset($_POST["logout"])) {
 				<div class="row">
 					<div class="col-md-12"> 
 						<h3 align="center">Gửi tin nhắn cho chúng tôi</h3> 
-						<form name="sentMessage" id="contactForm" novalidate> 
+						<form action="lienhe.php" method="post" name="form" class="form-box">
 							<div class="control-group form-group"> <div class="controls"> 
 								<label>Họ và tên:</label> 
-								<input type="text" class="form-control" id="name" required data-validation-required-message="Please enter your name."> 
+								<input type="text" class="form-control" name="name" placeholder="Nhập Tên Của Bạn" required> 
 								<p class="help-block">
 								</p> 
 							</div> 
 						</div> 
 						<div class="control-group form-group"> 
 							<div class="controls"> 
-								<label>Số điện thoại:</label> 
-								<input type="tel" class="form-control" id="phone" required data-validation-required-message="Please enter your phone number."> 
+								<label>Địa chỉ Email:</label> 
+								<input type="email" class="form-control" name="email"  placeholder="Nhập Email Của Bạn" required> 
 							</div> 
-						</div> 
+						</div>
 						<div class="control-group form-group"> 
 							<div class="controls"> 
-								<label>Địa chỉ Email:</label> 
-								<input type="email" class="form-control" id="email" required data-validation-required-message="Please enter your email address."> 
+								<label>Số Điện Thoại:</label> 
+								<input type="tel" class="form-control" name="phone" placeholder="Nhập Số Điên Thoại Của Bạn" required> 
 							</div> 
-						</div> 
+						</div>  
 						<div class="control-group form-group"> 
 							<div class="controls"> 
 								<label>Tin nhắn:</label> 
-								<textarea rows="10" cols="100" class="form-control" id="message" required data-validation-required-message="Please enter your message" maxlength="999" style="resize:none">
+								<textarea rows="10" cols="100" class="form-control" name="msg" required maxlength="999" style="resize:none">
 								</textarea> 
 							</div> 
 						</div> 
 						<div id="success">
 						</div> <!-- For success/fail messages --> 
 						<div align="center">
-							<button type="submit" class="btn btn-primary">Gửi tin nhắn
-							</button> 
-							<button type="button" class="btn btn-primary" onclick="myFunction()">Xóa
-							</button>
+							<input type="submit" name="submit" value="Gửi tin nhắn" class="btn btn-primary">
+							</input> 
 						</div>
 					</form> 
 				</div> 
@@ -259,3 +257,25 @@ if(isset($_POST["logout"])) {
 
 </footer>
 </html>
+<?php
+	if(isset($_POST['submit'])){
+		$name=$_POST['name'];
+		$email=$_POST['email'];
+		$phone=$_POST['phone'];
+		$msg=$_POST['msg'];
+
+		$to='cakeshopvlu@gmail.com'; // Receiver Email ID, Replace with your email ID
+		$subject='Khách Hàng Liên Hệ';
+		$message="Name :".$name."\n"."Phone :".$phone."\n"."Nội Dung:"."\n\n".$msg;
+		$headers="From: ".$email;
+
+		if(mail($to, $subject, $message, $headers)){
+			$message = "Cảm Ơn Đã Liên Hệ Với Chúng Tôi, Chúng Tôi Sẽ Sớm Liên Hệ Lại Với Bạn";
+			echo "<script type='text/javascript'>alert('$message');</script>";
+		}
+		else{
+			$message = "Có Gì Đó Sai Ở ";
+			echo "<script type='text/javascript'>alert('$message');</script>";
+		}
+	}
+?>
