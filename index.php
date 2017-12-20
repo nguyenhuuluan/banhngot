@@ -56,7 +56,10 @@ if(isset($_GET["action"]))
 }  
 
 
-
+if(isset($_SESSION["a"]))  
+{  
+	session_destroy();
+}
 
 if(isset($_POST["logout"])) {
 	$_SESSION["user_id"] = "";
@@ -162,9 +165,17 @@ if(isset($_POST["logout"])) {
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 											<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b>
 
-													echo $sl; ?> Sản Phẩm</b>
+
+													 <?php 
+													 if(isset($_SESSION["shopping_cart"]))  
+														{  
+															echo $sl;
+														}
+														else{ echo "0";}?> 
+
+												Sản Phẩm</b>
 													
 												</li>
 												<li>

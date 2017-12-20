@@ -1,3 +1,39 @@
+<?php
+session_start();
+include("connec.php");
+if(isset($_POST['dangnhap'])){
+  $username=$_POST['txtUsername'];
+  $password=$_POST['txtPassword'];
+  $username = stripcslashes($username);
+  $password = stripcslashes($password);
+//$result ="select * from account where username = '$username' and password = '$password'";
+  $result ="select * from account where username = '$username'";
+  $kq = mysqli_query($conn,$result);
+  $row = mysqli_fetch_array($kq);
+  if(count($row)>0)
+  {   
+    if(password_verify ( $password , $row['password'] )){
+      $url="index.php";
+      header("location: $url");
+      $_SESSION['username'] = $username;
+      $_SESSION['user_id'] = $row['userID'];
+      $_SESSION['a']=null;
+    }
+    else{
+     
+      $_SESSION['username'] = null;
+      $_SESSION['a']="2";
+    }    
+  } 
+  else 
+  {   
+    $_SESSION['username'] = null;
+    $_SESSION['a']="1";
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,7 +193,7 @@
         </div>
         <div class="col-md-8 b"> 
           <h3 align="center">Đăng Nhập Tài Khoản</h3> 
-          <form action='dangnhap.php?do=login' method='POST'>
+          <form action='' method='POST'>
             <div class="control-group form-group"> <div class="controls"> 
               <label>Tên Đăng Nhập:</label> 
               <input type="text" class="form-control" name='txtUsername'/> 
@@ -171,27 +207,43 @@
               <input type="password" class="form-control" name='txtPassword'/> 
             </div> 
           </div> 
+          <div class="control-group form-group"> 
+            <div class="controls"> 
+              <?php
+              if(isset($_SESSION["a"]))  
+              {  
 
-          <div align="center">
-            <button type="submit" class="btn btn-primary" name="dangnhap">Đăng Nhập
-            </button> 
-            <div align="Center"><a href="quenmk.php" >Quên Mật Khẩu !</a>
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="taotaikhoan.php" >Tạo Tài Khoản !</a></div>
-           </div>
-         </form> 
-       </div> 
+                if($_SESSION["a"]==1){
+                  echo "<label style='color:red;'>Tài khoản không tồn tại trong hệ thống!</label> ";
+                }
+                elseif($_SESSION["a"]==2){
+                 echo "<label style='color:red;'>Mật khẩu không chính xác!</label> ";
+               }
+             }  
+             ?>
+           </div> 
+         </div> 
 
-     </div>
+         <div align="center">
+          <button type="submit" class="btn btn-primary" name="dangnhap">Đăng Nhập
+          </button> 
+          <div align="Center"><a href="quenmk.php" >Quên Mật Khẩu !</a>
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="taotaikhoan.php" >Tạo Tài Khoản !</a></div>
+         </div>
+       </form> 
+     </div> 
+
    </div>
  </div>
- <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
- <!-- Include all compiled plugins (below), or include individual files as needed -->
- <script src="js/bootstrap.min.js"></script>
- <!-- Latest compiled and minified JavaScript -->
- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
- <div class="container"> 
- </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<div class="container"> 
+</div>
 </body>
 <footer class="footer-s">
 

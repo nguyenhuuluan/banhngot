@@ -11,80 +11,124 @@
 	<link href="css/mystyle.css" rel="stylesheet">
 </head>
 <body>
+	<?php
+	include("connec.php");
+	$error= '';
+	if(isset($_POST['check']))
+	{
 
-	<div class="container">  
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			<!-- Indicators -->
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				<li data-target="#myCarousel" data-slide-to="1"></li>
-				<li data-target="#myCarousel" data-slide-to="2"></li>
-			</ol>
+		$email = $_POST['txtemail'];
+		$result ="select * from account where email= '$email'";
+		$kq = mysqli_query($conn,$result);
+		$row = mysqli_fetch_array($kq);
+		if(count($row)>0){
+			$token = sha1(rand(1,999));
 
-			<!-- Wrapper for slides -->
-			<div class="carousel-inner">
-				<div class="item active">
-					<img src="img/Slide/ss1.jpg" alt="Los Angeles" style="width:100%;">
-				</div>
+			$sql="update account set reset_token= '$token'where email= '$email'";	
+			$query= mysqli_query($conn,$sql);
+			if(mysqli_query($conn,$sql))
+			{
+				$url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
-				<div class="item">
-					<img src="img/Slide/ss2.jpg" alt="Los Angeles" style="width:100%;">
-				</div>
+				$escaped_url = htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' );
+				$link = $escaped_url.'?tk='.$token.'&email='.$email;
+				echo '<a style="font-size:30px;" href="' . $escaped_url . '">' . $escaped_url . '</a>';
 
-				<div class="item">
-					<img src="img/Slide/ss3.jpg" alt="Los Angeles" style="width:100%;">
-				</div>
+		$to= $email; // Receiver Email ID, Replace with your email ID
+		$subject='KHÔI PHỤC MẬT KHẨU - CỬA HÀNG BÁNH NGỌT';
+		$message="Access this link $link to reset password";
+		$headers="From: "."cakeshopvlu@gmail.com";
+
+		if(mail($to, $subject, $message, $headers)){
+			$message = "Vui lòng check email để cập nhật mật khẩu!";
+			echo "<script type='text/javascript'>alert('$message');</script>";
+		}
+	}
+}else{
+	$error = 'Email không tồn tại trong hệ thống!';
+}
+}
+
+if(isset($_GET['tk'])){
+	$tmp2 = $_GET['tk'];
+	$tmp3 = $_GET['email'];
+	$url="updatemk.php?tk=$tmp2&email=$tmp3";
+	header("location: $url");
+}
+?>
+<div class="container">  
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="img/Slide/ss1.jpg" alt="Los Angeles" style="width:100%;">
 			</div>
-			<!-- Left and right controls -->
-			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
-				<span class="glyphicon glyphicon-chevron-left"></span>
-				<span class="sr-only">Previous</span>
-			</a>
-			<a class="right carousel-control" href="#myCarousel" data-slide="next">
-				<span class="glyphicon glyphicon-chevron-right"></span>
-				<span class="sr-only">Next</span>
-			</a>
-		</div>
-	</div>
-	<header id="home" class="header">
-		<div class="main_menu_bg navbar-fixed-top wow slideInDown" data-wow-duration="1s">
-			<div class="container">
-				<div class="row">
-					<div class="nave_menu">
-						<nav class="navbar navbar-default">
-							<div class="container-fluid">
-								<!-- Brand and toggle get grouped for better mobile display -->
-								<div class="navbar-header">
-									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-										<span class="sr-only">Toggle navigation</span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-										<span class="icon-bar"></span>
-									</button>
-									<a href="index.php"><img alt="logo" src="logo.png" height ="50" width ="50"> </a>
-								</div>
 
-								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-									<form action="search.php" method="get" class="navbar-form navbar-right">
-										<div class="form-group">
-											<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
-										</div>
-										<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
-									</form> 
-									<ul class="nav navbar-nav navbar-right menubar">
-										<li><a href="index.php"><b>Trang Chủ</b></a></li>
-										<li class="dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Sản phẩm</b><b class="caret"></b></a>
-											<ul class="dropdown-menu">
-												<?php
-												include("connec.php");
-												$query ="select * from loaibanh";
-												$kq = mysqli_query($conn,$query);
-												while($row = mysqli_fetch_row($kq)){
+			<div class="item">
+				<img src="img/Slide/ss2.jpg" alt="Los Angeles" style="width:100%;">
+			</div>
+
+			<div class="item">
+				<img src="img/Slide/ss3.jpg" alt="Los Angeles" style="width:100%;">
+			</div>
+		</div>
+		<!-- Left and right controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+</div>
+<header id="home" class="header">
+	<div class="main_menu_bg navbar-fixed-top wow slideInDown" data-wow-duration="1s">
+		<div class="container">
+			<div class="row">
+				<div class="nave_menu">
+					<nav class="navbar navbar-default">
+						<div class="container-fluid">
+							<!-- Brand and toggle get grouped for better mobile display -->
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+								<a href="index.php"><img alt="logo" src="logo.png" height ="50" width ="50"> </a>
+							</div>
+
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<form action="search.php" method="get" class="navbar-form navbar-right">
+									<div class="form-group">
+										<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
+									</div>
+									<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
+								</form> 
+								<ul class="nav navbar-nav navbar-right menubar">
+									<li><a href="index.php"><b>Trang Chủ</b></a></li>
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Sản phẩm</b><b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<?php
+											include("connec.php");
+											$query ="select * from loaibanh";
+											$kq = mysqli_query($conn,$query);
+											while($row = mysqli_fetch_row($kq)){
 
 												echo '
 												<li> 
-													<a href="loaisp.php?id='.$row[0].'" class = "t"><b> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'.$row[1].'</b></a>
+												<a href="loaisp.php?id='.$row[0].'" class = "t"><b> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'.$row[1].'</b></a>
 												</li>';
 											}
 											?>                                                  
@@ -145,82 +189,73 @@
 								$kq = mysqli_query($conn,$query);
 								while($row = mysqli_fetch_row($kq)){
 
-								echo '
-								<a href="loaisp.php?id='.$row[0].'" class="list-group-item"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>&nbsp <a2>'.$row[1].'</a2>
-								</a>';
-							}
-							?>
-						</b>
+									echo '
+									<a href="loaisp.php?id='.$row[0].'" class="list-group-item"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>&nbsp <a2>'.$row[1].'</a2>
+									</a>';
+								}
+								?>
+							</b>
+						</div>
 					</div>
-				</div>
-				<div class="col-md-8 b"> 
-					<h3 align="center">Tìm Mật Khẩu</h3> 
-					<form name="sentMessage" id="contactForm" novalidate> 
-						<div class="control-group form-group"> <div class="controls"> 
-							<label>Tên Đăng Nhập:</label> 
-							<input type="text" class="form-control" id="tendangnhapnew"> 
-							<p class="help-block">
-							</p> 
-						</div> 
-					</div> 
-					<div class="control-group form-group"> 
-						<div class="controls"> 
-							<label>Địa chỉ Email:</label> 
-							<input type="email" class="form-control" id="emailnew" required data-validation-required-message="Please enter your email address."> 
-						</div> 
-					</div>
-					<div class="control-group form-group"> 
-						<div class="controls"> 
-							<label>Số điện thoại:</label> 
-							<input type="tel" class="form-control" id="phonenew" required data-validation-required-message="Please enter your phone number."> 
-						</div> 
-					</div> 
-					
-					
-					<div align="center">
-						<button type="submit" class="btn btn-primary">Tìm Lại Mật Khẩu
-						</button> 
-					</div>
-				</form> 
-				
-			</div> 
-		</div>
-	</div>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.min.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<div class="container"> 
-	</div>
-</body>
-<footer class="footer-s">
+					<div class="col-md-8 b"> 
+						<h3 align="center">Cập nhật mật khẩu</h3> 
+						<form name="sentMessage" id="contactForm" novalidate method="POST" action=""> 
+							<div class="control-group form-group"> <div class="controls"> 
+								<div class="control-group form-group"> 
+									<div class="controls"> 
+										<label>Địa chỉ Email:</label> 
+										<input type="email" class="form-control" name="txtemail" id="emailnew" required data-validation-required-message="Please enter your email address."> 
+									</div> 
+								</div>
+								<div class="control-group form-group"> 
+									<div class="controls"> 
+										<?php echo '<span style="color:red;"> '.$error.' </span>'?>
+									</div> 
+								</div>
+								<div align="center">
+									<button type="submit" name="check" class="btn btn-primary">Tìm Lại Mật Khẩu
+									</button> 
+								</div>
+							</form> 
 
-	<div class="panel">
-		<div class="panel-footer">
-			<div class= "container">
-				<div class="col-lg-3" >
-					<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 1: TP.Hồ Chí Minh</h4> 
-					<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
-					<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
-					<p>Copyright &copy; </p>
+						</div> 
+					</div>
 				</div>
-				<div class="col-lg-3" >
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+				<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+				<!-- Include all compiled plugins (below), or include individual files as needed -->
+				<script src="js/bootstrap.min.js"></script>
+				<!-- Latest compiled and minified JavaScript -->
+				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+				<div class="container"> 
 				</div>
-				<div class="col-lg-3" >
-					<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 2: TP.Hồ Chí Minh</h4> 
-					<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
-					<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
-					<p>Copyright &copy; </p>
-				</div>
-				<div class="col-lg-3" >
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
-				</div>
-			</div>
-		</div>
-	</div>
+			</body>
+			<footer class="footer-s">
 
-</footer>
-</html>
+				<div class="panel">
+					<div class="panel-footer">
+						<div class= "container">
+							<div class="col-lg-3" >
+								<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 1: TP.Hồ Chí Minh</h4> 
+								<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
+								<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
+								<p>Copyright &copy; </p>
+							</div>
+							<div class="col-lg-3" >
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+							</div>
+							<div class="col-lg-3" >
+								<h4><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Cơ Sở 2: TP.Hồ Chí Minh</h4> 
+								<h4><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> +0123456789</h4>
+								<h4><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> VluTeam@gmail.com</h4>
+								<p>Copyright &copy; </p>
+							</div>
+							<div class="col-lg-3" >
+								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.633394897157!2d106.69113991435026!3d10.76271139233082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f16ad86371b%3A0x949d258c9508b1f2!2zxJDhuqFpIGjhu41jIFbEg24gTGFuZyBjxqEgc-G7nyAx!5e0!3m2!1svi!2s!4v1509810666541" width="200" height="150" frameborder="0" style="border:0" allowfullscreen></iframe>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</footer>
+			</html>

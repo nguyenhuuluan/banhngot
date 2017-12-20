@@ -18,7 +18,7 @@ if(isset($_POST["logout"])) {
 	<link href="css/mystyle.css" rel="stylesheet">
 </head>
 <body>
-
+<?php  header('Refresh:1;index.php');?>
 	<div class="container">  
 		<div id="myCarousel" class="carousel slide" data-ride="carousel">
 			<!-- Indicators -->
@@ -180,7 +180,7 @@ if(isset($_POST["logout"])) {
 				    session_destroy(); // xóa session login
 				}
 				?>
-				<div align="center" ><a href="Index.php" ><h1> Cảm ơn đã sử dụng dịch vụ của chúng tôi!<h1></a></div>
+				<div align="center" ><a href="index.php" ><h1> Cảm ơn đã sử dụng dịch vụ của chúng tôi!<h1></a></div>
           </form> 
         </div>
 			</div>
