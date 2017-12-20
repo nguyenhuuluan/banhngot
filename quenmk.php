@@ -32,7 +32,6 @@
 
 				$escaped_url = htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' );
 				$link = $escaped_url.'?tk='.$token.'&email='.$email;
-				echo '<a style="font-size:30px;" href="' . $escaped_url . '">' . $escaped_url . '</a>';
 
 		$to= $email; // Receiver Email ID, Replace with your email ID
 		$subject='KHÔI PHỤC MẬT KHẨU - CỬA HÀNG BÁNH NGỌT';

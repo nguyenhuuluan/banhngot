@@ -1,7 +1,11 @@
-<?php session_start(); if (!isset($_SESSION['username'])) {header('Location: index.php');}?>
+<?php session_start();
+
+if(!isset($_SESSION['username']) || !isset($_SESSION['admin'])){
+        header("location: index.php");
+    }?>
 <?php
 if(isset($_POST["logout"])) {
-	$_SESSION["user_id"] = "";
+	$_SESSION["userid"] = "";
 	session_destroy();
 }
 ?>
@@ -199,8 +203,11 @@ if(isset($_POST["logout"])) {
 												echo '	<tr>
 												<td>'.$row[0].'</td>
 												<td>'.$row[1].'</td>
-												<td>'.$row[2].'</td>
+												<td>'.substr($row[2], 0,10).'...</td>
 												<td>'.$row[3].'</td>
+												<td>'.substr($row[4], 0,10).'...</td>
+												<td>'.$row[5].'</td>
+												<td>'.substr($row[6], 0,10).'...</td>
 												<td>
 												<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
 												<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
@@ -231,7 +238,7 @@ if(isset($_POST["logout"])) {
 												echo '	<tr>
 												<td>'.$row[0].'</td>
 												<td>'.$row[1].'</td>
-												<td>'.$row[2].'</td>
+												<td>'.substr($row[2], 0,10).'...</td>
 												<td>'.$row[3].'</td>
 												<td>'.$row[4].'</td>
 												<td>'.$row[5].'</td>
@@ -254,6 +261,9 @@ if(isset($_POST["logout"])) {
 											<td>'.$row[1].'</td>
 											<td>'.$row[2].'</td>
 											<td>'.$row[3].'</td>
+											<td>'.substr($row[4], 0,10).'...</td>
+											<td>'.$row[5].'</td>
+											<td>'.substr($row[6], 0,10).'...</td>
 											<td>
 											<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
 											<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
