@@ -159,10 +159,14 @@ if(isset($_GET['tmp'])){
 		# code...
 		$id = $_GET['id'];
 		$sql="delete from banh where id='$id'";
-		$query=mysqli_query($conn,$sql);
-		if($query)
+		if(mysqli_query($conn,$sql))
 		{
 			header('Refresh:0;quanly.php?tmp=Banh');		
+		}else{
+
+			$message = "Tồn tại khuyến mãi thuộc bánh này! \\n Không thể xóa bánh này!";
+			echo "<script type='text/javascript'>alert('$message');</script>";
+			header('Refresh:0;quanly.php?tmp=Banh');
 		}
 	}
 	

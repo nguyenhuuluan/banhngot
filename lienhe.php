@@ -103,9 +103,12 @@ if(isset($_POST["logout"])) {
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 											<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
-
-													echo $sl; ?> Sản Phẩm</b>
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php 
+													 if(isset($_SESSION["shopping_cart"]))  
+														{  $sl =count($_SESSION["shopping_cart"]);
+															echo $sl;
+														}
+														else{ echo "0";}?>  Sản Phẩm</b>
 													
 												</li>
 												<li>

@@ -170,7 +170,7 @@ if(isset($_POST["logout"])) {
 
 													 <?php 
 													 if(isset($_SESSION["shopping_cart"]))  
-														{  
+														{  $sl =count($_SESSION["shopping_cart"]);
 															echo $sl;
 														}
 														else{ echo "0";}?> 
@@ -270,10 +270,11 @@ if(isset($_POST["logout"])) {
 						<div class="col-sm-6 col-md-4">
 						<form method="post" action="index.php?action=add&id='.$row[0].'"> 
 						<div class="thumbnail">
-						<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a "></a>
+						<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a"></a>
 						<div class="caption">
-						<h4> <div align="center"><a2>'.$row[1].'</a2></div></h4>	
-						<p><div align="center"><b2>Giá: '.$row[2].' VND</b2></div></p>	
+						<h4><div align="center"><a2>'.$row[1].'</a2><img src="img/hot.png" width="40" height="40" style="padding"></div></h4>
+						<p><div align="center">'.$row[3].'</div></p>	
+						<p><div align="center"><b2>Giá: '.number_format($row[2]).' VND</b2></div></p>	
 						<p><input type="text" name="quantity" class="form-control" value="1" /> </p>
 						<input type="hidden" name="hidden_name" value="'.$row[1].'">
 						<input type="hidden" name="hidden_price" value="'.$row[2].'">

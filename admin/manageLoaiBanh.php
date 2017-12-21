@@ -48,7 +48,7 @@ if(isset($_GET['tmp'])){
 		<table>
 		<tr>
 		<td>Tên loại:</td>
-		<td><input type="text" name="txtten" value="'.$row[1].'"><input type="hidden" name="txtid" value="1"/> </td>
+		<td><input type="text" name="txtten" value="'.$row[1].'" required><input type="hidden" name="txtid" value="1"/> </td>
 		</tr>
 		<tr>
 		<td></td>
@@ -84,10 +84,17 @@ if(isset($_GET['tmp'])){
 		# code...
 		$id = $_GET['id'];
 		$sql="delete from loaibanh where id='$id'";
-		$query=mysqli_query($conn,$sql);
-		if($query)
+		//mysqli_query($conn,$sql)
+		//$conn->query($sql) === true
+		if(mysqli_query($conn,$sql))
 		{
 			header('Refresh:0;quanly.php?tmp=LoaiBanh');		
+		}
+		else{
+
+			$message = "Tồn tại bánh thuộc loại bánh này! \\n Không thể xóa loại bánh này!";
+			echo "<script type='text/javascript'>alert('$message');</script>";
+			header('Refresh:0;quanly.php?tmp=LoaiBanh');
 		}
 	}
 	

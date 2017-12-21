@@ -26,6 +26,7 @@
     $email = $_POST['txtemail'];
     $phone = $_POST['phone'];
     $address = $_POST['address'];
+    $name = $_POST['txtname'];
 
 
     $result ="select * from account where username = '$UserName'";
@@ -51,7 +52,7 @@
       else{
         //add new user
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT, $options);
-        $sql="insert into account(username,password,email,diachi,phone) values('$UserName','$password','$email', '$address','$phone')";
+        $sql="insert into account(name, username,password,email,diachi,phone) values('$name','$UserName','$password','$email', '$address','$phone')";
         if(mysqli_query($conn,$sql))
         {
           header('Refresh:0;thankyou2.php');
@@ -215,6 +216,13 @@
               <h3 align="center">Tạo Mới Tài Khoản</h3> 
               <form name="createAccount" id="createForm" method="POST" action=""> 
                 <div class="control-group form-group"> <div class="controls"> 
+                  <label>Họ tên:</label> 
+                  <input type="text" class="form-control" name="txtname" required> 
+                  <p class="help-block">
+                  </p> 
+                </div> 
+              </div>
+              <div class="control-group form-group"> <div class="controls"> 
                   <label>Tên Đăng Nhập:</label> 
                   <input type="text" class="form-control" name="txtuser" required pattern="[A-Za-z0-9]{1,15}"> 
                   <p class="help-block">

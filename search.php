@@ -160,9 +160,12 @@ if(isset($_POST["logout"])) {
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 											<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
-
-													echo $sl; ?> Sản Phẩm</b>
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php 
+													 if(isset($_SESSION["shopping_cart"]))  
+														{  $sl =count($_SESSION["shopping_cart"]);
+															echo $sl;
+														}
+														else{ echo "0";}?>  Sản Phẩm</b>
 													
 												</li>
 												<li>
@@ -237,7 +240,11 @@ if(isset($_POST["logout"])) {
 
 					<?php
 					$search = trim($_GET['textsearch']);
-					$query1 = "select * from banh where tenbanh like '%$search%' or mota like '%$search%' or giaban like '%$search%'";
+					// $query1 = "select * from banh where tenbanh like '%$search%' or mota like '%$search%' or giaban like '%$search%'";
+
+					$query1 = "select * from banh ba join loaibanh lb on ba.maloaibanh=lb.id where ba.tenbanh like '%$search%' or ba.giaban like '%$search%' or lb.tenloai like '%$search%'";
+
+
 					$kq1 = mysqli_query($conn,$query1);
 					$tongsp = mysqli_num_rows($kq1);
 					$sosp= 6;
@@ -248,9 +255,10 @@ if(isset($_POST["logout"])) {
 						$p = $_GET["p"];
 					$x = ($p - 1)*$sosp;
 
-					$query2 = "select * from banh where tenbanh like '%$search%' or mota like '%$search%' or giaban like '%$search%' limit ".$x.",".$sosp;
+					$query2 = "select * from banh ba join loaibanh lb on ba.maloaibanh=lb.id where ba.tenbanh like '%$search%' or ba.giaban like '%$search%' or lb.tenloai like '%$search%' limit ".$x.",".$sosp;
 					$kq2 = mysqli_query($conn,$query2);
 
+					
 
 					while ($row = mysqli_fetch_row($kq2)){
 						echo'
@@ -260,7 +268,7 @@ if(isset($_POST["logout"])) {
 						<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a "></a>
 						<div class="caption">
 						<h4> <div align="center"><a2>'.$row[1].'</a2></div></h4>	
-						<p><div align="center"><b2>Giá: '.$row[2].' VND</b2></div></p>	
+						<p><div align="center"><b2>Giá: '.number_format($row[2]).' VND</b2></div></p>	
 						<p><input type="text" name="quantity" class="form-control" value="1" /> </p>
 						<input type="hidden" name="hidden_name" value="'.$row[1].'">
 						<input type="hidden" name="hidden_price" value="'.$row[2].'">

@@ -128,9 +128,9 @@ if(isset($_POST["logout"])) {
 								</div>
 
 								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-									<form class="navbar-form navbar-right">
-										<div class="form-group" >
-											<input type="text"  class="form-control" placeholder="Tìm kiếm sản phẩm" >
+									<form action="search.php" method="get" class="navbar-form navbar-right">
+										<div class="form-group">
+											<input type="text" name="textsearch" class="form-control" placeholder="Tìm kiếm sản phẩm" >
 										</div>
 										<button type="submit" class="btn btn-default">  Tìm Kiếm </button>
 									</form>	
@@ -159,9 +159,15 @@ if(isset($_POST["logout"])) {
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Giỏ Hàng</b><b class="caret"></b></a>
 											<ul class="dropdown-menu">
 												<li>
-													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b> <?php $sl =count($_SESSION["shopping_cart"]);
+													<a class = "t"> <span class="glyphicon glyphicon-shopping-cart"></span><b>
 
-													echo $sl; ?> Sản Phẩm</b>
+
+													<?php 
+													 if(isset($_SESSION["shopping_cart"]))  
+														{  $sl =count($_SESSION["shopping_cart"]);
+															echo $sl;
+														}
+														else{ echo "0";}?>  Sản Phẩm</b>
 													
 												</li>
 												<li>
@@ -272,7 +278,7 @@ if(isset($_POST["logout"])) {
 						<a href="#"><img src="img/'.$row[4].'" alt="..." width="200" class="a "></a>
 						<div class="caption">
 						<h4> <div align="center"><a2>'.$row[1].'</a2></div></h4>	
-						<p><div align="center"><b2>Giá: '.$row[2].' VND</b2></div></p>	
+						<p><div align="center"><b2>Giá: '.number_format($row[2]).' VND</b2></div></p>	
 						<p><input type="text" name="quantity" class="form-control" value="1" /> </p>
 						<input type="hidden" name="hidden_name" value="'.$row[1].'">
 						<input type="hidden" name="hidden_price" value="'.$row[2].'">

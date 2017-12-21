@@ -1,8 +1,8 @@
 <?php session_start();
 
 if(!isset($_SESSION['username']) || !isset($_SESSION['admin'])){
-        header("location: index.php");
-    }?>
+	header("location: index.php");
+}?>
 <?php
 if(isset($_POST["logout"])) {
 	$_SESSION["userid"] = "";
@@ -19,6 +19,11 @@ if(isset($_POST["logout"])) {
 	<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<meta charset="utf-8">
 	<title>Admin Page</title>
+	<script language="JavaScript" type="text/javascript">
+		function checkDelete(){
+			return confirm('Are you sure?');
+		}
+	</script>
 </head> 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<!-- Navigation-->
@@ -85,12 +90,17 @@ if(isset($_POST["logout"])) {
 				<div class="card-header">
 					<i class="fa fa-table"></i><?php
 					if(isset($_GET["tmp"])){
-						echo 'Manage '.$_GET["tmp"].'<hr>';
-						echo '<a href="manage'.$_GET["tmp"].'.php?tmp=create" class="btn btn-success">Create new</a>';
+						if($_GET["tmp"]!="Account"){
+							echo 'Manage '.$_GET["tmp"].'<hr>';
+							echo '<a href="manage'.$_GET["tmp"].'.php?tmp=create" class="btn btn-success">Create new</a>';
+						}
+						else{
+							echo 'Manage Account<hr>';
+						}
 					}						
 					else {
 						echo 'Manage Account<hr>';
-						echo '<a href="manageAccount.php?tmp=create" class="btn btn-success">Create new</a>';
+						
 					}
 
 					
@@ -129,6 +139,7 @@ if(isset($_POST["logout"])) {
 												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
 												$kq1 = mysqli_query($conn,$query1);
 												while($row = mysqli_fetch_row($kq1)){
+													if($row[0]!='reset_token')
 													echo '<th>'.$row[0].'</th>';
 												} 
 												echo '</th><th>Action</th>';  
@@ -146,14 +157,18 @@ if(isset($_POST["logout"])) {
 												$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='hoadon'";
 												$kq1 = mysqli_query($conn,$query1);
 												while($row = mysqli_fetch_row($kq1)){
-													echo '<th>'.$row[0].'</th>';
+													if($row[0]=='makh'){
+														echo '<th>TenKh</th>';
+													}else{echo '<th>'.$row[0].'</th>';}
+													
 												} 
-												echo '</th><th>Action</th>';  
+												echo '<th>Phone</th> <th>Action</th>';  
 											}
 										}else{
 											$query1= "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='demo' AND `TABLE_NAME`='account'";
 											$kq1 = mysqli_query($conn,$query1);
 											while($row = mysqli_fetch_row($kq1)){
+												if($row[0]!='reset_token')
 												echo '<th>'.$row[0].'</th>';
 											} 
 											echo '</th><th>Action</th>';  
@@ -177,7 +192,7 @@ if(isset($_POST["logout"])) {
 												<td>'.$row[5].'</td>
 												<td>
 												<a href="manageBanh.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
-												<a href="manageBanh.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												<a href="manageBanh.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger delete" onclick="return confirm(\'Are you sure?\')">Delete</a>
 												</td>
 												</tr>';
 											}	
@@ -191,7 +206,7 @@ if(isset($_POST["logout"])) {
 												<td>'.$row[1].'</td>
 												<td>
 												<a href="manageLoaiBanh.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
-												<a href="manageLoaiBanh.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												<a href="manageLoaiBanh.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</a>
 												</td>
 												</tr>';
 											}	
@@ -210,7 +225,7 @@ if(isset($_POST["logout"])) {
 												<td>'.substr($row[6], 0,10).'...</td>
 												<td>
 												<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
-												<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</a>
 												</td>
 												</tr>';
 											}	
@@ -218,11 +233,15 @@ if(isset($_POST["logout"])) {
 											$query2= "SELECT * FROM hoadon";
 											$kq2 = mysqli_query($conn,$query2);
 											while($row = mysqli_fetch_row($kq2)){
+												$query3= "SELECT * FROM account where userId = $row[3]";
+												$kq3 = mysqli_query($conn,$query3);
+												$row2 = mysqli_fetch_array($kq3);
 												echo '	<tr>
 												<td>'.$row[0].'</td>
-												<td>'.$row[1].'</td>
+												<td>'.number_format($row[1]).' VNĐ</td>
 												<td>'.$row[2].'</td>
-												<td>'.$row[3].'</td>
+												<td>'.$row2[1].'</td>
+												<td>'.$row2[6].'</td>
 												<td>
 												<a href="detailHoadon.php?id='.$row[0].'&&tmp=detail" class="btn btn-warning">Detail</a>
 												</td>
@@ -231,7 +250,7 @@ if(isset($_POST["logout"])) {
 										}
 
 
-											else if($_GET["tmp"]=="KhuyenMai"){
+										else if($_GET["tmp"]=="KhuyenMai"){
 											$query2= "SELECT * FROM khuyenmai";
 											$kq2 = mysqli_query($conn,$query2);
 											while($row = mysqli_fetch_row($kq2)){
@@ -245,7 +264,7 @@ if(isset($_POST["logout"])) {
 												<td>'.$row[6].'</td>
 												<td>
 												<a href="manageKhuyenmai.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
-												<a href="manageKhuyenmai.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+												<a href="manageKhuyenmai.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</a>
 												</td>
 												</tr>';
 											}	
@@ -266,7 +285,7 @@ if(isset($_POST["logout"])) {
 											<td>'.substr($row[6], 0,10).'...</td>
 											<td>
 											<a href="manageAccount.php?id='.$row[0].'&&tmp=edit" class="btn btn-warning">Edit</a>
-											<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger">Delete</a>
+											<a href="manageAccount.php?id='.$row[0].'&&tmp=delete" class="btn btn-danger" onclick="return confirm(\'Are you sure?\')">Delete</a>
 											</td>
 											</tr>';
 										}	

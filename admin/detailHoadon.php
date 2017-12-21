@@ -104,8 +104,8 @@ if(isset($_POST["logout"])) {
 						$kq3 = mysqli_query($conn,$query3);
 						$row3 = mysqli_fetch_array($kq3);
 
-						echo $row3[2];
-
+						echo '<span style="color:green">'.$row3[1].'</span></h1>';
+						echo '<h2>Số điện thoại: <span style="color:blue">'.$row3[6].'</span>';
 						?></h1>
 						<h2>Chi tiết hóa đơn:</h2>
 						<div class="table-responsive">
@@ -125,12 +125,15 @@ if(isset($_POST["logout"])) {
 											$query5= "SELECT * FROM chitiethoadon where mahd = '$id'";
 											$kq5 = mysqli_query($conn,$query5);
 											while($row5 = mysqli_fetch_row($kq5)){
+												$query6= "SELECT * FROM banh where id = '$row5[2]'";
+												$kq6 = mysqli_query($conn,$query6);
+												$row6 = mysqli_fetch_array($kq6);
 												echo '	<tr>
 												<td>'.$row5[0].'</td>
 												<td>'.$row5[1].'</td>
-												<td>'.$row5[2].'</td>
+												<td>'.$row6[1].'</td>
 												<td>'.$row5[3].'</td>
-												<td>'.$row5[4].'</td>
+												<td>'.number_format($row5[4]).' VNĐ</td>
 												</tr>';
 									}
 
@@ -138,8 +141,8 @@ if(isset($_POST["logout"])) {
 								</tbody>
 							</table>
 							<h2><?php
-								echo "Tổng tiền: ".$row2[1];
-								echo " VNĐ";
+								echo 'Tổng tiền: <span style="color:red">'.number_format($row2[1]);
+								echo " VNĐ</span>";
 							?></h2>
 						</div>
 					</div>
